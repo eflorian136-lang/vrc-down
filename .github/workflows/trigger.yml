@@ -1,0 +1,23 @@
+name: Public Download Trigger
+on:
+  repository_dispatch:
+    types: [start-download]
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install yt-dlp
+        run: pip install yt-dlp
+
+      - name: Download VOD
+        run: yt-dlp -o 'video.mp4' "${{ github.event.client_payload.url }}"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: video-download
+          path: video.mp4
