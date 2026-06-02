@@ -4,20 +4,13 @@ on:
     types: [start-download]
 
 jobs:
+  concurrency:
+    group: twitch-download
+    cancel-in-progress: false
   download:
     runs-on: ubuntu-latest
+    concurrency:
+      group: twitch-download  # Sorgt dafür, dass nur ein Video gleichzeitig geladen wird
+      cancel-in-progress: false # Warteschlange: Der nächste Download startet, wenn der vorherige fertig ist
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install yt-dlp
-        run: pip install yt-dlp
-
-      - name: Download VOD
-        run: yt-dlp -o 'video.mp4' "${{ github.event.client_payload.url }}"
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: video-download
-          path: video.mp4
+      ...
