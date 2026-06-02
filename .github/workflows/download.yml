@@ -1,32 +1,40 @@
 name: Twitch Download Workflow
 
 on:
-  workflow_dispatch:
-    inputs:
-      url:
-        description: 'Twitch VOD URL'
-        required: true
+  push:
+    paths:
+      - 'queue.json'
 
 jobs:
   download:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
         with:
-          python-version: '3.10'
+          token: ${{ secrets.MY_API_TOKEN }}
+      
+      - name: Lese URL aus JSON
+        id: read_url
+        run: echo "url=$(jq -r '.url' queue.json)" >> $GITHUB_OUTPUT
+      
+      - name: Check ob URL existiert
+        if: ${{ steps.read_url.outputs.url != '' && steps.read_url.outputs.url != 'null' }}
+        run: echo "URL gefunden: ${{ steps.read_url.outputs.url }}"
 
       - name: Install yt-dlp
+        if: ${{ steps.read_url.outputs.url != '' && steps.read_url.outputs.url != 'null' }}
         run: pip install yt-dlp
 
       - name: Download VOD
-        run: yt-dlp "${{ github.event.inputs.url }}"
+        if: ${{ steps.read_url.outputs.url != '' && steps.read_url.outputs.url != 'null' }}
+        run: yt-dlp -o 'video.mp4' "${{ steps.read_url.outputs.url }}"
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: downloaded-vod
-          path: '*.mp4'
+      - name: Aufräumen und Leeren
+        if: ${{ steps.read_url.outputs.url != '' && steps.read_url.outputs.url != 'null' }}
+        run: |
+          echo '{"url": ""}' > queue.json
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add queue.json video.mp4
+          git commit -m "Video geladen und Queue geleert"
+          git push
