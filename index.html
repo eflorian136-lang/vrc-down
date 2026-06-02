@@ -1,25 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
+    <meta charset="UTF-8">
     <title>VRC VOD Downloader</title>
 </head>
 <body>
-    <h1>Twitch VOD Downloader</h1>
-    <input type="text" id="vodUrl" placeholder="Twitch URL einfügen" style="width: 300px;">
-    <button onclick="updateQueue()">Download starten</button>
-
-    <script>
-        async function updateQueue() {
-            const url = document.getElementById('vodUrl').value;
-            const repo = 'eflorian136-lang/vrc-down';
-            
-            // WICHTIG: Das ist der API-Call.
-            // Damit das ohne Token im Frontend geht, müsstest du 
-            // später auf GitHub Pages eine kleine "Proxy"-Funktion legen.
-            // Für jetzt: Wir bereiten den API-Struktur-Call vor.
-            alert('Versuche Queue zu aktualisieren: ' + url);
-            console.log('Daten:', { url: url });
-        }
-    </script>
+    <h1>VRC VOD Downloader</h1>
+    <p>Um ein Video herunterzuladen, folge diesen Schritten:</p>
+    <ol>
+        <li>Klicke auf den Button unten, um zu deinem GitHub-Repository zu gelangen.</li>
+        <li>Wähle dort den Tab <b>"Actions"</b>.</li>
+        <li>Wähle den Workflow <b>"VOD Download"</b> aus.</li>
+        <li>Klicke auf <b>"Run workflow"</b> und gib deine Twitch-URL ein.</li>
+    </ol>
+    <a href="https://github.com/eflorian136-lang/vrc-down/actions" target="_blank">
+        <button style="padding: 10px 20px; font-size: 16px;">Zum Downloader (GitHub Actions)</button>
+    </a>
 </body>
 </html>
