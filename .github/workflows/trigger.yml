@@ -1,16 +1,15 @@
 name: Public Download Trigger
 on:
-  repository_dispatch:
-    types: [start-download]
+  push:
+    paths:
+      - 'queue.txt'
 
 jobs:
-  concurrency:
-    group: twitch-download
-    cancel-in-progress: false
   download:
     runs-on: ubuntu-latest
-    concurrency:
-      group: twitch-download  # Sorgt dafür, dass nur ein Video gleichzeitig geladen wird
-      cancel-in-progress: false # Warteschlange: Der nächste Download startet, wenn der vorherige fertig ist
     steps:
-      ...
+      - uses: actions/checkout@v3
+      - name: Lese URL und starte Download
+        run: |
+          URL=$(cat queue.txt)
+          python3 download_script.py "$URL"

@@ -1,17 +1,16 @@
 name: VOD Download Trigger
 
 on:
-  repository_dispatch:
-    types: [start-download]
+  workflow_dispatch:
+    inputs:
+      vod_url:
+        description: 'VOD URL'
+        required: true
+        default: ''
 
 jobs:
   download:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Starte Download Skript
-        run: |
-          # Hier wird dein Skript aufgerufen
-          python3 test_downloader.py "${{ github.event.client_payload.url }}"
+      - name: Starte Download
+        run: echo "Download gestartet für ${{ github.event.inputs.vod_url }}"
