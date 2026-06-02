@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>StreamGraber Web-Engine</title>
+    <style>
+        body { font-family: sans-serif; background: #1a202c; color: white; text-align: center; padding: 50px; }
+        .box { background: #2d3748; padding: 30px; border-radius: 15px; max-width: 500px; margin: auto; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: none; }
+        button { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>StreamGraber API</h1>
+        <input type="text" id="url" placeholder="Twitch URL...">
+        <button onclick="processDownload()">Download starten</button>
+        <div id="status" style="margin-top:20px;"></div>
+    </div>
+    <script>
+        async function processDownload() {
+            const url = document.getElementById('url').value;
+            const status = document.getElementById('status');
+            status.innerHTML = "Warteschlange wird initialisiert...";
+            
+            const res = await fetch('/api/download?url=' + encodeURIComponent(url));
+            const data = await res.json();
+            
+            if(data.downloadUrl) {
+                status.innerHTML = '<a href="'+data.downloadUrl+'" target="_blank" style="color:#68d391;">Klicke hier zum Download</a>';
+            } else {
+                status.innerHTML = "Fehler: " + data.error;
+            }
+        }
+    </script>
+</body>
+</html>

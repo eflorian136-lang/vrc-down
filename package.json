@@ -1,0 +1,12 @@
+{
+  "name": "vrc-down",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node api/proxy.js"
+  },
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
