@@ -1,0 +1,32 @@
+name: Twitch Download Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Twitch VOD URL'
+        required: true
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install yt-dlp
+        run: pip install yt-dlp
+
+      - name: Download VOD
+        run: yt-dlp "${{ github.event.inputs.url }}"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: downloaded-vod
+          path: '*.mp4'
