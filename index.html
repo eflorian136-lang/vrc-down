@@ -1,25 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <title>VRC VOD Downloader</title>
+    <meta charset="UTF-8">
+    <title>VRC Downloader</title>
 </head>
 <body>
-    <h1>Twitch VOD Downloader</h1>
-    <input type="text" id="vodUrl" placeholder="Twitch URL einfügen" style="width: 300px;">
-    <button onclick="updateQueue()">Download starten</button>
+    <h1>VRC VOD Downloader</h1>
+    <p>Hier kannst du den Download-Prozess starten:</p>
 
-    <script>
-        async function updateQueue() {
-            const url = document.getElementById('vodUrl').value;
-            const repo = 'eflorian136-lang/vrc-down';
-            
-            // WICHTIG: Das ist der API-Call.
-            // Damit das ohne Token im Frontend geht, müsstest du 
-            // später auf GitHub Pages eine kleine "Proxy"-Funktion legen.
-            // Für jetzt: Wir bereiten den API-Struktur-Call vor.
-            alert('Versuche Queue zu aktualisieren: ' + url);
-            console.log('Daten:', { url: url });
-        }
-    </script>
+    <a href="https://github.com/eflorian136-lang/vrc-down/actions" target="_blank">
+        <button style="padding: 20px; font-size: 20px; cursor: pointer;">
+            Download auf GitHub starten
+        </button>
+    </a>
+
 </body>
 </html>
