@@ -1,30 +1,22 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>VOD Downloader</title>
-    <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding-top: 50px; }
-        .container { border: 1px solid #ccc; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 350px; }
-        input { width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border: 1px solid #ccc; }
-        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    </style>
-</head>
+<html>
 <body>
-<div class="container">
-    <h2>VOD Downloader</h2>
-    <input type="text" id="vodUrl" placeholder="Twitch VOD URL eingeben...">
-    <button onclick="startDirectDownload()">Download starten</button>
-</div>
-
-<script>
-function startDirectDownload() {
-    const url = document.getElementById('vodUrl').value;
-    if (!url) { alert("Bitte URL eingeben!"); return; }
-    // Wir leiten an einen Dienst weiter, der Twitch unterstützt
-    const downloadService = "https://www.clipconverter.cc/de/download/";
-    window.open(downloadService + "?url=" + encodeURIComponent(url), '_blank');
-}
-</script>
+    <h2>Twitch Stream Player</h2>
+    <input type="text" id="url" placeholder="Twitch Link...">
+    <button onclick="play()">Stream laden & speichern</button>
+    <video id="video" controls style="width: 100%;"></video>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+    async function play() {
+        const url = document.getElementById('url').value;
+        const res = await fetch("https://vrc-down.onrender.com/download?url=" + encodeURIComponent(url));
+        const data = await res.json();
+        const v = document.getElementById('video');
+        const hls = new Hls();
+        hls.loadSource(data.url);
+        hls.attachMedia(v);
+        alert("Rechtsklick auf Video -> 'Video speichern unter...' zum Download!");
+    }
+    </script>
 </body>
 </html>
