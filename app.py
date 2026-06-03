@@ -3,13 +3,16 @@ import yt_dlp
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return "Server läuft! Nutze /download?url=DEIN_TWITCH_LINK zum Herunterladen."
+
 @app.route('/download')
 def download():
     url = request.args.get('url')
     if not url:
-        return "Keine URL angegeben", 400
+        return "Bitte eine URL angeben: /download?url=URL", 400
     
-    # yt-dlp holt die direkte Stream-URL von Twitch
     ydl_opts = {'format': 'best', 'quiet': True}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
