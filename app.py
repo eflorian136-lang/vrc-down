@@ -1,23 +1,21 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import yt_dlp
 
 app = Flask(__name__)
-CORS(app) # WICHTIG: Erlaubt den Zugriff von deiner Website
 
-@app.route('/get-link')
-def get_link():
+@app.route('/download')
+def download():
     url = request.args.get('url')
     if not url:
-        return jsonify({'error': 'Keine URL'}), 400
-    
+        return "Bitte URL angeben: /download?url=DEIN_LINK", 200
     try:
+        # Hier versuchen wir die Info zu bekommen
         ydl_opts = {'format': 'best', 'quiet': True}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            return jsonify({'stream_url': info['url']})
+            return jsonify({'url': info['url']})
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return f"Fehler: {str(e)}", 500
 
 if __name__ == '__main__':
     import os
