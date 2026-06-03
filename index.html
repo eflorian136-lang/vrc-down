@@ -8,11 +8,9 @@
         .container { border: 1px solid #ccc; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 350px; }
         input { width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border: 1px solid #ccc; }
         button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #218838; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <h2>VOD Downloader</h2>
     <input type="text" id="vodUrl" placeholder="Twitch VOD URL eingeben...">
@@ -23,13 +21,10 @@
 function startDirectDownload() {
     const url = document.getElementById('vodUrl').value;
     if (!url) { alert("Bitte URL eingeben!"); return; }
-
-    // Wir nutzen hier einen Dienst, der Twitch VODs direkt verarbeiten kann
-    // Du kannst die URL hier an einen bekannten Downloader-Service anhängen
-    const downloadService = "https://twitch-dl.com/download?url=";
-    window.open(downloadService + encodeURIComponent(url), '_blank');
+    // Wir leiten an einen Dienst weiter, der Twitch unterstützt
+    const downloadService = "https://www.clipconverter.cc/de/download/";
+    window.open(downloadService + "?url=" + encodeURIComponent(url), '_blank');
 }
 </script>
-
 </body>
 </html>
