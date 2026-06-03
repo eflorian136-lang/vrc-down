@@ -1,24 +1,24 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import yt_dlp
 
 app = Flask(__name__)
+CORS(app) # WICHTIG: Erlaubt den Zugriff von deiner Website
 
-@app.route('/download')
-def download():
+@app.route('/get-link')
+def get_link():
     url = request.args.get('url')
-    ydl_opts = {
-        'format': 'best',
-        'quiet': False,
-        'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=False)
-        video_url = info['url']
-        
-    # Dieser "Header" zwingt den Browser zum Download statt Abspielen
-    return redirect(video_url + "&dl=1")
+    if not url:
+        return jsonify({'error': 'Keine URL'}), 400
+    
+    try:
+        ydl_opts = {'format': 'best', 'quiet': True}
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            return jsonify({'stream_url': info['url']})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     import os
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
