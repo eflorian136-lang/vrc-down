@@ -16,17 +16,23 @@
 <div class="container">
     <h2>VOD Downloader</h2>
     <input type="text" id="vodUrl" placeholder="Twitch VOD URL eingeben...">
-    <button onclick="startDownload()">Download starten</button>
+    <button onclick="startDownload(event)">Download starten</button>
 </div>
 
 <script>
-function startDownload() {
+function startDownload(event) {
+    // Verhindert, dass die Seite neu lädt oder "springt"
+    event.preventDefault(); 
+
     const url = document.getElementById('vodUrl').value;
     if (!url) { alert("Bitte gib eine URL ein!"); return; }
+
+    // Der GitHub-Link
+    const githubLink = `https://github.com/eflorian136-lang/vrc-down/edit/main/queue.txt?message=Add%20VOD:%20${encodeURIComponent(url)}&value=${encodeURIComponent(url)}`;
     
-    // Öffnet den GitHub-Editor zum Committen der queue.txt
-    const githubLink = `https://github.com/eflorian136-lang/vrc-down/edit/main/queue.txt?message=Download+starten&value=${encodeURIComponent(url)}`;
     window.open(githubLink, '_blank');
+}
+</script>
 }
 </script>
 
