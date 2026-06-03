@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Twitch Proxy Player</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
 <body>
     <h2>Twitch Stream Player</h2>
-    <input type="text" id="url" placeholder="Twitch Link...">
-    <button onclick="play()">Stream laden & speichern</button>
-    <video id="video" controls style="width: 100%;"></video>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <input type="text" id="url" placeholder="Twitch URL hier einfügen" style="width:300px;">
+    <button onclick="loadStream()">Stream laden</button>
+    <br><br>
+    <video id="video" controls style="width: 80%;"></video>
+
     <script>
-    async function play() {
+    async function loadStream() {
         const url = document.getElementById('url').value;
-        const res = await fetch("https://vrc-down.onrender.com/download?url=" + encodeURIComponent(url));
-        const data = await res.json();
-        const v = document.getElementById('video');
-        const hls = new Hls();
-        hls.loadSource(data.url);
-        hls.attachMedia(v);
-        alert("Rechtsklick auf Video -> 'Video speichern unter...' zum Download!");
+        // Ruft deinen funktionierenden API-Endpunkt ab
+        const response = await fetch("https://vrc-down.onrender.com/download?url=" + encodeURIComponent(url));
+        const data = await response.json();
+        
+        if (data.url) {
+            const video = document.getElementById('video');
+            const hls = new Hls();
+            hls.loadSource(data.url);
+            hls.attachMedia(video);
+            alert("Stream geladen! Rechtsklick auf Video -> 'Video speichern unter...' zum Download.");
+        } else {
+            alert("Fehler: Konnte Stream-Quelle nicht finden.");
+        }
     }
     </script>
 </body>
