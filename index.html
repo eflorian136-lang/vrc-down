@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head><title>Twitch Downloader</title></head>
+<head><title>Twitch 24/7 Downloader</title></head>
 <body>
     <h2>Twitch Stream Player</h2>
-    <input type="text" id="url" placeholder="Twitch Link..." style="width:300px;">
+    <input type="text" id="url" placeholder="Twitch URL..." style="width:300px;">
     <button onclick="play()">Stream laden</button>
-    <video id="v" controls style="width: 80%; margin-top: 20px;"></video>
+    <br><br>
+    <video id="v" controls style="width: 80%;"></video>
     <script>
     async function play() {
         const url = document.getElementById('url').value;
@@ -14,8 +15,8 @@
         if(data.url) {
             const v = document.getElementById('v');
             v.src = data.url;
-            alert("Lade...");
-        } else { alert("Fehler!"); }
+            v.play();
+        } else { alert("Fehler beim Laden."); }
     }
     </script>
 </body>
