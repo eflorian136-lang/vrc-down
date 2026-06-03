@@ -35,8 +35,12 @@ function startDownload(event) {
     const queueList = document.getElementById('queue-list');
     const item = document.createElement('div');
     item.className = 'queue-item';
+    
+    const commitUrl = `https://github.com/eflorian136-lang/vrc-down/edit/main/queue.txt?value=${encodeURIComponent(url)}`;
+    
     item.innerHTML = `Link: ${url.substring(0, 20)}... <br> 
-                      <a href="https://github.com/eflorian136-lang/vrc-down/edit/main/queue.txt?value=${encodeURIComponent(url)}" target="_blank">Jetzt committen</a>`;
+                      <button onclick="window.open('${commitUrl}', '_blank')">Jetzt zu GitHub & Committen</button>`;
+    
     queueList.appendChild(item);
     document.getElementById('vodUrl').value = '';
 }
